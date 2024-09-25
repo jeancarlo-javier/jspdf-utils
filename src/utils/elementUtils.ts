@@ -107,3 +107,13 @@ export function calculateLineYPosition(
 export function adjustLineCursorPosition(blockContext: BlockContext, options: BaseLineOptions): void {
   blockContext.updateCursorYPosition(calcCursorYPosition(blockContext, options, options.y) + 1)
 }
+
+
+export default {
+  setDocumentFont,
+  getTextSettings,
+  adjustTextCursorPosition,
+  calculateLineXPosition,
+  calculateLineYPosition,
+  adjustLineCursorPosition
+}
