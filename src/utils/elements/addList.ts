@@ -1,6 +1,5 @@
 import {
   resetDocConfig,
-  // calcCursorYPosition,
   getTextHeight,
   centerTextHorizontal,
   calcXPosition,
@@ -20,7 +19,7 @@ import type { jsPDF } from 'jspdf'
  * @param {jsPDF} doc - The jsPDF document instance.
  * @param {BlockContext} blockContext - The context of the current block in the PDF document.
  * @param {string[]} items - The array of list items to add.
- * @param {BaseListOptions} options - The options for the list formatting.
+ * @param {BaseListOptions} [options={}] - The options for the list formatting.
  */
 function addList(doc: jsPDF, blockContext: BlockContext, items: string[], options: BaseListOptions = {}): void {
   const {
@@ -50,23 +49,28 @@ function addList(doc: jsPDF, blockContext: BlockContext, items: string[], option
     return
   }
 
+  // Set the document font based on the options provided.
   setDocumentFont(doc, fontFamily, fontStyle, fontWeight, fontSize)
 
+  // Adjust the cursor position if elements exist.
   if (blockContext.numberOfElements > 0) {
     adjustTextCursorPosition(blockContext)
   }
 
-  // Apply margins and offsets
+  // Apply margins and offsets for positioning.
   const adjustedX = initialX
   const adjustedY = initialY
 
+  // Calculate the maximum width for the list elements, factoring in margins and padding.
   const elementMaxWidth =
     getMaxElementWidth(doc, blockContext, maxWidth || 0) - (marginLeft + marginRight + leftOffset + rightOffset)
 
+  // Calculate the initial Y position.
   let yPosition = calcYPosition(adjustedY, blockContext, options)
 
+  // Iterate through the list items and render each one.
   items.forEach((item, index) => {
-    // Determine prefix
+    // Determine the prefix for ordered lists (decimal, roman, alpha) or bullet for unordered lists.
     let prefix = ''
     if (ordered) {
       if (numberStyle === 'decimal') {
@@ -80,44 +84,46 @@ function addList(doc: jsPDF, blockContext: BlockContext, items: string[], option
       prefix = `${bulletType} `
     }
 
+    // Concatenate the prefix and the list item text.
     const listItemText = prefix + item
 
-    // Calculate text height
+    // Calculate the height of the text block.
     const textHeight = getTextHeight(doc, listItemText, elementMaxWidth || 0, {
       fontSize,
       lineHeight
     })
 
-    // Apply page break if needed
+    // Add a new page if the current item exceeds the remaining page height.
     addNewPageIfNeeded(doc, blockContext, textHeight)
 
-    // Calculate positions
+    // Calculate the X position for the list item.
     let xPosition = calcXPosition(doc, blockContext, adjustedX + itemIndent, options, listItemText)
 
-    // Center text horizontally if needed
+    // Center the text horizontally if the option is set.
     if (textCenter) {
       xPosition = centerTextHorizontal(doc, listItemText, options)
     }
 
-    // Get text settings
+    // Get additional text settings such as alignment.
     const textSettings = getTextSettings(elementMaxWidth, textAlign, lineHeight)
 
-    // Add text to the document
+    // Add the text to the document at the calculated position.
     doc.text(listItemText, xPosition, yPosition, textSettings)
 
-    // Update cursorYPosition
+    // Update the Y position for the next item based on the text height and line height.
     yPosition += textHeight * lineHeight
 
-    // Update the block context cursor position
+    // Update the block context to reflect the new cursor position.
     blockContext.updateCursorYPosition(yPosition)
 
-    // Increase the number of elements
+    // Increment the element count in the block context.
     blockContext.addElement()
   })
 
-  // Apply bottom margin and offset
+  // Apply bottom margin and offsets after rendering the list.
   blockContext.updateCursorYPosition(blockContext.cursorYPosition + marginBottom + bottomOffset)
 
+  // Reset the document configuration to the default settings.
   resetDocConfig(doc)
 }
 
