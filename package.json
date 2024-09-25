@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Utilities for JSPDF",
   "type": "module",
-  "peerDependencies": {
+  "dependencies": {
     "jspdf": "^2.5.1"
   }
 }
