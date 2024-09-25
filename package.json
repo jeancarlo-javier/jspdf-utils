@@ -1,3 +1,9 @@
 {
-  "type": "module"
+  "name": "@javixcode/jspdf-utils",
+  "version": "1.0.0",
+  "description": "Utilities for JSPDF",
+  "type": "module",
+  "peerDependencies": {
+    "jspdf": "^2.5.1"
+  }
 }
