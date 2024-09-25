@@ -3,7 +3,13 @@
   "version": "1.0.1",
   "description": "Utilities for JSPDF",
   "type": "module",
+  "scripts": {
+    "test": "vitest"
+  },
   "peerDependencies": {
     "jspdf": "^2.5.1"
+  },
+  "dependencies": {
+    "vitest": "^2.1.1"
   }
 }
