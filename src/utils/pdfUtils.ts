@@ -1,4 +1,4 @@
-import type { jsPDF } from 'jspdf'
+import { jsPDF } from 'jspdf'
 import type { BaseTextOptions, BaseElementOptions } from '../types/pdfUtils.types'
 import BlockContext from '../types/blockContext'
 import type { TextOptionsLight } from 'jspdf'
