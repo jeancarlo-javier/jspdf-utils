@@ -1,6 +1,6 @@
 {
-  "name": "@javixcode/jspdf-utils",
-  "version": "1.0.1",
+  "name": "@javixlab/jspdf-utils",
+  "version": "1.0.0",
   "description": "Utilities for JSPDF",
   "type": "module",
   "scripts": {
